@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
+import time
 
 db = create_engine("sqlite:///meubanco.db")
 Session = sessionmaker(bind=db)
@@ -8,10 +9,10 @@ session = Session()
 
 Base = declarative_base()
 
-class Aluno(Base):
-    __tablename__ = "alunos"
+class Usuario(Base):
+    __tablename__ = "usuarios"
 
-    ra = Column("R.A", Integer, primary_key=True, autoincrement=True)
+    id = Column("Id", Integer, primary_key=True, autoincrement=True)
     nome = Column("Nome", String)
     idade = Column("Idade", Integer)
     email = Column("E-mail", String)
@@ -23,20 +24,70 @@ class Aluno(Base):
 
 Base.metadata.create_all(bind=db)
 
-os.system("cls || clear")
+# FUNÇÕES
 
-for i in range(2):
+def carregando():
+    os.system("cls || clear")
+    print("Carregando.")
+    time.sleep(2)
+    os.system("cls || clear")
+
+def menu_inicial_grafico():
+    print("Menu: ")
+    print("\n1. Registrar um novo estudante.")
+    print("\n2. Ver registro dos estudantes.")
+    print("\n3. Pesquisar um estudante.")
+    print("\n4. Remover um estudante dos registros.")
+    print("\n5. Encerrar.\n")
+
+def menu_inicial_funcional(resposta_menu):
+    match resposta_menu:
+        case 1:
+
+def registrar_usuario(usuario):
+    print("\nRegistrando um usuário: \n")
     nome = input("Digite seu nome: ")
     idade = int(input("Digite sua idade: "))
     email = input("Digite seu e-mail: ")
+    usuario = Usuario(nome= nome, idade= idade, email= email)
+    session.add(usuario)
+    session.commit()
 
-aluno = Aluno(nome= nome, idade= idade, email= email)
-session.add(aluno)
-session.commit()
+def registros_usuarios(usuario):
+    print("\nRegistros de Usuários: \n")
+    for usuario in lista_usuarios:
+     print(f"{usuario.id} - {usuario.nome} - {usuario.idade} - {usuario.email}")
 
-lista_alunos = session.query(Aluno).all()
+def pesquisar_usuario(usuario):
+    print("\nPesquisando usuários:\n")
+    
+
+
+
+
+### FUNCIONAL 
+
+# COMEÇO
+
+print("Bem vindo, aguarde.")
+
+carregando()
+
+menu_inicial_grafico()
+resposta_menu = int(input("\nDigite a opção desejada: "))
+
+
+lista_usuarios = session.query(Usuario).all()
 
 print("R.A || Nome || Idade || E-mail")
 
-for aluno in lista_alunos:
-    print(f"{aluno.ra} - {aluno.nome} - {aluno.idade} - {aluno.email}")
+
+
+print("\nAtualizando os dados do usuário...")
+
+email_usuario = input("Informe o e-mail do usuário: ")
+
+session.commit()
+
+print("\nPesquisando um usuário pelo R.A: ")
+
