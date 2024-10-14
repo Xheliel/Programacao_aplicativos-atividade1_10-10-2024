@@ -24,6 +24,7 @@ class Usuario(Base):
 
 Base.metadata.create_all(bind=db)
 
+
 # FUNÇÕES
 
 def carregando():
@@ -38,11 +39,18 @@ def menu_inicial_grafico():
     print("\n2. Ver registro dos estudantes.")
     print("\n3. Pesquisar um estudante.")
     print("\n4. Remover um estudante dos registros.")
-    print("\n5. Encerrar.\n")
+    print("\n5. Encerrar.\n") # Vou trabalhar no final
 
 def menu_inicial_funcional(resposta_menu):
     match resposta_menu:
         case 1:
+            registrar_usuario(resposta_menu)
+        case 2:
+            registros_usuarios(resposta_menu)
+        case 3:
+            pesquisar_usuario(resposta_menu)
+        case 4:
+            deletar_usuario(resposta_menu)
 
 def registrar_usuario(usuario):
     print("\nRegistrando um usuário: \n")
@@ -53,6 +61,8 @@ def registrar_usuario(usuario):
     session.add(usuario)
     session.commit()
 
+lista_usuarios = session.query(Usuario).all()
+
 def registros_usuarios(usuario):
     print("\nRegistros de Usuários: \n")
     for usuario in lista_usuarios:
@@ -60,10 +70,21 @@ def registros_usuarios(usuario):
 
 def pesquisar_usuario(usuario):
     print("\nPesquisando usuários:\n")
-    
+    usuario_id = input("\nInforme o id: ")
+    usuario = session.query(Usuario).filter_by(id = usuario_id).first()
 
+    if usuario:
+        print(f"\nInformações sobre usuário: {usuario.id} - {usuario.nome} - {usuario.idade} - {usuario.email}")
+    else:
+        print("Usuário não encontrado")
 
-
+def deletar_usuario(usuario):
+    print("\nExcluíndo usuário:\n")
+    usuario_id = input("\nInforme um id: ")
+    usuario = session.query(Usuario).filter_by(id = usuario_id).first()
+    session.delete(usuario)
+    session.commit()
+    print("\nUsuário deletado")
 
 ### FUNCIONAL 
 
@@ -75,19 +96,20 @@ carregando()
 
 menu_inicial_grafico()
 resposta_menu = int(input("\nDigite a opção desejada: "))
-
-
-lista_usuarios = session.query(Usuario).all()
-
-print("R.A || Nome || Idade || E-mail")
+menu_inicial_funcional(resposta_menu)
+carregando()
 
 
 
-print("\nAtualizando os dados do usuário...")
+# print("R.A || Nome || Idade || E-mail")
 
-email_usuario = input("Informe o e-mail do usuário: ")
 
-session.commit()
 
-print("\nPesquisando um usuário pelo R.A: ")
+# print("\nAtualizando os dados do usuário...")
+
+# email_usuario = input("Informe o e-mail do usuário: ")
+
+# session.commit()
+
+# print("\nPesquisando um usuário pelo R.A: ")
 
