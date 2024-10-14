@@ -23,6 +23,7 @@ class Usuario(Base):
         self.email = email
 
 Base.metadata.create_all(bind=db)
+lista_usuarios = session.query(Usuario).all()
 
 
 # FUNÇÕES
@@ -61,11 +62,11 @@ def registrar_usuario(usuario):
     session.add(usuario)
     session.commit()
 
-lista_usuarios = session.query(Usuario).all()
 
 def registros_usuarios(usuario):
     print("\nRegistros de Usuários: \n")
     for usuario in lista_usuarios:
+     lista_usuarios = session.query(Usuario).all()
      print(f"{usuario.id} - {usuario.nome} - {usuario.idade} - {usuario.email}")
 
 def pesquisar_usuario(usuario):
@@ -97,7 +98,7 @@ carregando()
 menu_inicial_grafico()
 resposta_menu = int(input("\nDigite a opção desejada: "))
 menu_inicial_funcional(resposta_menu)
-carregando()
+#carregando()
 
 
 
